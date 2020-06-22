@@ -4,7 +4,7 @@ resource "aws_iam_policy" "this" {
   name        = var.name
   path        = var.path
   policy      = var.policy
-  
+
   lifecycle {
     create_before_destroy = true
   }
