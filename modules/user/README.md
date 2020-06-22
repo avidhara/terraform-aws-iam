@@ -1,4 +1,4 @@
-# Terraform module for IAM User
+# Terraform module for IAM policy
 
 ## Using as Module
 ```hcl
@@ -28,20 +28,19 @@ module "iam_policy" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| description | (Optional, Forces new resource)Description of the IAM policy | `string` | `""` | no |
-| name | (Optional, Forces new resource)The name of the policy. If omitted, Terraform will assign a random, unique name | `string` | `""` | no |
+| create\_iam\_user | Do you want to create IAM user | `bool` | `true` | no |
+| force\_destroy | (Optional, default false) When destroying this user, destroy even if it has non-Terraform-managed IAM access keys, login profile or MFA devices. Without force\_destroy a user with non-Terraform-managed access keys and login profile will fail to be destroyed. | `bool` | `false` | no |
+| name | (Required) The user's name. The name must consist of upper and lowercase alphanumeric characters with no spaces. | `string` | `""` | no |
 | path | (Optional, default /) Path in which to create the policy | `string` | `"/"` | no |
-| policy | (Required)The policy document. This is a JSON formatted string. | `string` | `""` | no |
+| permissions\_boundary | (Optional) The ARN of the policy that is used to set the permissions boundary for the user. | `string` | `null` | no |
+| tags | Key-value map of tags for the IAM user | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | arn | The ARN assigned by AWS to this policy. |
-| description | The description of the policy |
-| id | The policy's ID. |
 | name | The name of the policy |
-| path | The path of the policy in IAM |
-| policy | The policy document |
+| unique\_id | The unique ID assigned by AWS. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
