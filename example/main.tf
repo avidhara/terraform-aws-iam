@@ -19,3 +19,12 @@ module "iam_user" {
   path   = "/system/"
   groups = [module.iam_group.name]
 }
+
+module "iam_role" {
+  source             = "../modules/role"
+  name               = "ec2-role"
+  description        = "Allows EC2 instances to call AWS services on your behalf."
+  path               = "/system/"
+  assume_role_policy = file("${path.module}/ec2-role.json")
+  policy_arn         = [module.iam_policy.arn]
+}

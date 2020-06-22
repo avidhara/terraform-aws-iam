@@ -16,6 +16,7 @@ resource "aws_iam_user_policy_attachment" "this" {
   user  = aws_iam_user.this[0].name
   # checkov:skip=CKV_AWS_40: Avoid this 
   policy_arn = var.policy_arn[count.index]
+
   depends_on = [
     aws_iam_user.this,
   ]
@@ -25,4 +26,8 @@ resource "aws_iam_user_group_membership" "this" {
   count  = length(var.groups) > 0 ? 1 : 0
   user   = aws_iam_user.this[0].name
   groups = var.groups
+
+  depends_on = [
+    aws_iam_user.this,
+  ]
 }
