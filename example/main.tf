@@ -17,5 +17,5 @@ module "iam_user" {
   source = "../modules/user"
   name   = "rajeev.jaggavarapu"
   path   = "/system/"
-  # policy_arn = [module.iam_policy.arn]
+  groups = [module.iam_group.name]
 }

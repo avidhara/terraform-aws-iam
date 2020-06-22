@@ -8,7 +8,7 @@ resource "aws_iam_group" "this" {
   }
 }
 
-resource "aws_iam_group_policy_attachment" "test-attach" {
+resource "aws_iam_group_policy_attachment" "this" {
   count      = length(var.policy_arn) > 0 ? length(var.policy_arn) : 0
   group      = aws_iam_group.this[0].name
   policy_arn = var.policy_arn[count.index]

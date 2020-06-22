@@ -10,11 +10,19 @@ resource "aws_iam_user" "this" {
   }
 }
 
-# resource "aws_iam_group_policy_attachment" "test-attach" {
-#   count      = length(var.policy_arn) > 0 ? length(var.policy_arn) : 0
-#   group      = aws_iam_group.this[0].name
-#   policy_arn = var.policy_arn[count.index]
-#   depends_on = [
-#     aws_iam_group.this,
-#   ]
-# }
+# Avoid this for Reducing access management complexity
+resource "aws_iam_user_policy_attachment" "this" {
+  count = length(var.policy_arn) > 0 ? length(var.policy_arn) : 0
+  user  = aws_iam_user.this[0].name
+  # checkov:skip=CKV_AWS_40: Avoid this 
+  policy_arn = var.policy_arn[count.index]
+  depends_on = [
+    aws_iam_user.this,
+  ]
+}
+# Associating user to a group
+resource "aws_iam_user_group_membership" "this" {
+  count  = length(var.groups) > 0 ? 1 : 0
+  user   = aws_iam_user.this[0].name
+  groups = var.groups
+}

@@ -35,3 +35,19 @@ variable "tags" {
 
   }
 }
+
+variable "policy_arn" {
+  type        = list(string)
+  description = "The ARN of the policy you want to apply"
+  default = [
+
+  ]
+}
+
+variable "groups" {
+  type        = list(string)
+  description = "(Required) A list of IAM Groups to add the user to"
+  default = [
+
+  ]
+}
