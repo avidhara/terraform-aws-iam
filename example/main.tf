@@ -1,30 +1,15 @@
-module "iam_policy" {
-  source      = "../modules/policy"
-  description = var.description
-  name        = var.name
-  path        = var.path
-  policy      = file("${path.module}/s3-policy.json")
-}
+module "iam_policy_user_group" {
+  source             = "../"
+  policy_description = "Access to S3"
+  policy_name        = "S3FULLACCESS1"
+  policy             = file("${path.module}/s3-policy.json")
 
-module "iam_group" {
-  source     = "../modules/group"
-  name       = "S3_ADMINS"
-  path       = "/system/"
-  policy_arn = [module.iam_policy.arn]
-}
+  create_group = true
+  group_name   = "admin12"
+  group_path   = "/"
 
-module "iam_user" {
-  source = "../modules/user"
-  name   = "rajeev.jaggavarapu"
-  path   = "/system/"
-  groups = [module.iam_group.name]
-}
+  create_iam_user = true
+  user_name       = "example                                                           "
+  user_path       = "/"
 
-module "iam_role" {
-  source             = "../modules/role"
-  name               = "ec2-role"
-  description        = "Allows EC2 instances to call AWS services on your behalf."
-  path               = "/system/"
-  assume_role_policy = file("${path.module}/ec2-role.json")
-  policy_arn         = [module.iam_policy.arn]
 }

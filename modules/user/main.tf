@@ -12,7 +12,7 @@ resource "aws_iam_user" "this" {
 
 # Avoid this for Reducing access management complexity
 resource "aws_iam_user_policy_attachment" "this" {
-  count = length(var.policy_arn) > 0 ? length(var.policy_arn) : 0
+  count = length(var.policy_arn) > 0 && var.create_iam_user ? length(var.policy_arn) : 0
   user  = aws_iam_user.this[0].name
   # checkov:skip=CKV_AWS_40: Avoid this 
   policy_arn = var.policy_arn[count.index]
@@ -23,7 +23,7 @@ resource "aws_iam_user_policy_attachment" "this" {
 }
 # Associating user to a group
 resource "aws_iam_user_group_membership" "this" {
-  count  = length(var.groups) > 0 ? 1 : 0
+  count  = length(var.groups) > 0 && var.create_iam_user ? 1 : 0
   user   = aws_iam_user.this[0].name
   groups = var.groups
 
